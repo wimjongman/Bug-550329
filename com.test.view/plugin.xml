@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            name="Sample Category"
+            id="com.test.view">
+      </category>
+      <view
+            id="com.test.view.views.SampleView"
+            name="Sample View"
+            icon="icons/sample.png"
+            class="com.test.view.views.SampleView"
+            category="com.test.view"
+            inject="true">
+      </view>
+      <view
+            category="com.test.view"
+            class="com.test.view.views.SampleView2"
+            icon="icons/sample.png"
+            id="com.test.view.views.SampleView2"
+            inject="true"
+            name="Sample View 2">
+      </view>
+      <view
+            category="com.test.view"
+            class="com.test.view.views.SampleView3"
+            icon="icons/sample.png"
+            id="com.test.view.views.SampleView3"
+            inject="true"
+            name="Sample View 3">
+      </view>
+      <view
+            category="com.test.view"
+            class="com.test.view.views.SampleView4"
+            icon="icons/sample.png"
+            id="com.test.view.views.SampleView4"
+            inject="true"
+            name="Sample View 4">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.eclipse.jdt.ui.JavaPerspective">
+         <view
+               id="com.test.view.views.SampleView"
+               relative="org.eclipse.ui.views.ProblemView"
+               relationship="right"
+               ratio="0.5">
+         </view>
+      </perspectiveExtension>
+   </extension>
+   <extension
+         point="org.eclipse.help.contexts">
+      <contexts
+            file="contexts.xml">
+      </contexts>
+   </extension>
+
+</plugin>
