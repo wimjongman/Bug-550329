@@ -22,6 +22,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IActionBars;
@@ -93,6 +94,10 @@ public class SampleView extends ViewPart implements ISelectionListener {
 		gridLayout.horizontalSpacing = 0;
 		parent.setLayout(gridLayout);
 
+		Label label = new Label(parent, SWT.WRAP);
+		label.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		label.setText(getDescription());
+
 		fText = new Text(parent, SWT.SINGLE | SWT.LEAD | SWT.BORDER);
 		fText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
@@ -111,6 +116,11 @@ public class SampleView extends ViewPart implements ISelectionListener {
 		hookContextMenu();
 		hookDoubleClickAction();
 		contributeToActionBars();
+	}
+
+	protected String getDescription() {
+		return "View 1 selects on everything. When it is hidden" + " it does not receive selections anymore. "
+				+ "When it is unhidden the current selection is offered";
 	}
 
 	protected void addSelectionListener() {
@@ -201,14 +211,14 @@ public class SampleView extends ViewPart implements ISelectionListener {
 
 	@Override
 	public void selectionChanged(IWorkbenchPart pPart, ISelection pSelection) {
-		String sel = getClass().getSimpleName() + ": Selection received: " + pPart.getClass().getSimpleName() + " : "
+		String sel = "Selection received: " + pPart.getClass().getSimpleName() + " : "
 				+ pSelection.toString();
 		if (getSite().getPage().isPartVisible(this)) {
-			System.out.println(sel);
+			System.out.println(getClass().getSimpleName() + ": " + sel);
 			fText.setBackground(fText.getDisplay().getSystemColor(SWT.COLOR_GREEN));
 		} else {
 			fText.setBackground(fText.getDisplay().getSystemColor(SWT.COLOR_RED));
-			System.err.println(sel);
+			System.err.println(getClass().getSimpleName() + ": " + sel);
 		}
 		fText.setText(sel);
 	}

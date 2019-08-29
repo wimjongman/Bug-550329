@@ -19,4 +19,9 @@ public class SampleView3 extends SampleView {
 				.addSelectionListener(SelectionListenerFactory.createVisibleSelfMutedListener(this, this, predicate));
 	}
 
+	protected String getDescription() {
+		return "View 3 selects only if a single PlatformObject was selected (e.g. from the navigator) When it is hidden"
+				+ " it does not receive selections anymore. " + "When it is unhidden the current selection is offered";
+	}
+
 }
