@@ -19,8 +19,11 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.ISharedImages;
@@ -61,6 +64,8 @@ public class SampleView extends ViewPart implements ISelectionListener {
 	private Action action2;
 	private Action doubleClickAction;
 
+	private Text fText;
+
 	class ViewLabelProvider extends LabelProvider implements ITableLabelProvider {
 		@Override
 		public String getColumnText(Object obj, int index) {
@@ -80,21 +85,36 @@ public class SampleView extends ViewPart implements ISelectionListener {
 
 	@Override
 	public void createPartControl(Composite parent) {
+
+		GridLayout gridLayout = new GridLayout(1, false);
+		gridLayout.marginWidth = 5;
+		gridLayout.marginHeight = 5;
+		gridLayout.verticalSpacing = 0;
+		gridLayout.horizontalSpacing = 0;
+		parent.setLayout(gridLayout);
+
+		fText = new Text(parent, SWT.SINGLE | SWT.LEAD | SWT.BORDER);
+		fText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+
 		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 
 		viewer.setContentProvider(ArrayContentProvider.getInstance());
 		viewer.setInput(new String[] { "One", "Two", "Three" });
 		viewer.setLabelProvider(new ViewLabelProvider());
+		viewer.getTable().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
 		// Create the help context id for the viewer's control
 		workbench.getHelpSystem().setHelp(viewer.getControl(), "com.test.view.viewer");
 		getSite().setSelectionProvider(viewer);
-		getSite().getPage()
-				.addSelectionListener(SelectionListenerFactory.createVisibleListener(this, this));
+		addSelectionListener();
 		makeActions();
 		hookContextMenu();
 		hookDoubleClickAction();
 		contributeToActionBars();
+	}
+
+	protected void addSelectionListener() {
+		getSite().getPage().addSelectionListener(SelectionListenerFactory.createVisibleListener(this, this));
 	}
 
 	private void hookContextMenu() {
@@ -181,11 +201,16 @@ public class SampleView extends ViewPart implements ISelectionListener {
 
 	@Override
 	public void selectionChanged(IWorkbenchPart pPart, ISelection pSelection) {
+		String sel = getClass().getSimpleName() + ": Selection received: " + pPart.getClass().getSimpleName() + " : "
+				+ pSelection.toString();
 		if (getSite().getPage().isPartVisible(this)) {
-			System.out.println("View 1: Selection received: " + pPart.toString() + " : " + pSelection.toString());
+			System.out.println(sel);
+			fText.setBackground(fText.getDisplay().getSystemColor(SWT.COLOR_GREEN));
 		} else {
-			System.err.println("View 1: Selection received: " + pPart.toString() + " : " + pSelection.toString());
+			fText.setBackground(fText.getDisplay().getSystemColor(SWT.COLOR_RED));
+			System.err.println(sel);
 		}
+		fText.setText(sel);
 	}
 
 	@Override
