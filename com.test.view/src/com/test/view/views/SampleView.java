@@ -95,11 +95,19 @@ public class SampleView extends ViewPart implements ISelectionListener {
 		parent.setLayout(gridLayout);
 
 		Label label = new Label(parent, SWT.WRAP);
-		label.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		label.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		label.setText(getDescription());
+
+		Label label21 = new Label(parent, SWT.NONE);
+		label21.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
+		label21.setText(" ");
 
 		fText = new Text(parent, SWT.SINGLE | SWT.LEAD | SWT.BORDER);
 		fText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+
+		Label label2 = new Label(parent, SWT.NONE);
+		label2.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
+		label2.setText("");
 
 		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 
@@ -211,8 +219,7 @@ public class SampleView extends ViewPart implements ISelectionListener {
 
 	@Override
 	public void selectionChanged(IWorkbenchPart pPart, ISelection pSelection) {
-		String sel = "Selection received: " + pPart.getClass().getSimpleName() + " : "
-				+ pSelection.toString();
+		String sel = "Selection received: " + pPart.getClass().getSimpleName() + " : " + pSelection.toString();
 		if (getSite().getPage().isPartVisible(this)) {
 			System.out.println(getClass().getSimpleName() + ": " + sel);
 			fText.setBackground(fText.getDisplay().getSystemColor(SWT.COLOR_GREEN));
